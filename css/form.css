@@ -5,6 +5,11 @@
   margin-top: 2%;
   border: 1px solid #222222;
   border-radius: 5px;
+  min-width: 300px;
+}
+.form_container > h3 {
+  text-align: center;
+  margin-top: 5px;
 }
 
 .underlined_text {
@@ -19,4 +24,16 @@
 /* Свойства цкласса при наведении */
 .underlined_text:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
+  .form_container {
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .form_container {
+    width: 100%;
+  }
 }

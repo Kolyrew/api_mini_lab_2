@@ -6,20 +6,23 @@ const formValidation = {}  // Сюда пишутся статусы валид�
 // Объявляется и инициализируется константная переменная
 // Инициализация функцией, заданной в стрелочном виде
 export const validatePassword = (e) => {
-  formValidation.password = e.target.value
-  console.log("Password validation...")
-  console.log(e)
+  // console.log("Password validation...")
+  // console.log(e)
+  // formValidation.password = e
   // Напишите код валидации здесь и присвойте true/false в объект(словарь) formValidation
   // formValidation.password = ...  // formValidation['password'] = ... - то же самое, но другой синтаксис
-  return formValidation.password !== undefined   // Это заглушка, return вероятно надо переписать
+  // Требования к паролю по очереди: хотя бы 1 строчная буква, хотя бы 1 
+  // заглавная буква, хотя бы 1 цифра, хотя бы 1 спецсимвол, хотя бы 10
+  // символов
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{10,})/
+  return String(e)
+    .match(passwordRegex);
 }
-
 
 export const validateEmail = (email) => {
   // Создадим шаблон регулярного выражения. В нём применяются шаблонные строки
   // Гуглить по тегам: "шаблонные строки js", "регулярные выражения"
   const regExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
   return String(email)
     .toLowerCase()
     .match(regExp);
@@ -31,6 +34,8 @@ export const getValidationStatus = () => {
   // Происходит функциональная мгаия, читай строчку кода ниже как:
   // Получить значения (не ключи) из объекта, затем применить к каждому значению функцию двойного логического отрицания
   // (преобразование к булевому типу) и результаты всех применений это true, то вернуть true, иначе - false
+  console.log(formValidation)
+  if (Object.values(formValidation).length == 0) return false
   return Object.values(formValidation).every((validationStatus) => !!validationStatus)
 }
 
@@ -41,6 +46,26 @@ export const setFormValue = (valueKey, newValue, validator) => {
   if (validator !== undefined) {
     formValidation[valueKey] = validator(newValue)
   }
+}
+
+export const isValid = (valueKey) => {
+  return !!formValidation[valueKey]
+}
+
+export const refreshValidation = (fields) => {
+  // console.log(Object.keys(formValidation))
+  // console.log(formValidation)
+  for (let key in formValidation) {
+    delete formValidation[key]
+  }
+  for (let key in formValues) {
+    delete formValues[key]
+  }
+  for (let field of fields) {
+    formValidation[field] = false
+  }
+  console.log(formValidation)
+  console.log(formValues)
 }
 
 
